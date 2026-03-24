@@ -205,7 +205,7 @@ function ArtLab({ input, setInput, monster, setMonster, saved, setSaved, playCli
   );
 }
 
-function SimpleRoom({ title, emoji })({ title, emoji }) {
+function SimpleRoom({ title, emoji }) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <div className="text-6xl">{emoji}</div>

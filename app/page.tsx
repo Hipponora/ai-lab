@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 // 🎮 HIPPNORA — GAME WORLD (STABLE + EXTENDED)
 export default function HipponoraGameWorld() {
@@ -9,6 +10,8 @@ export default function HipponoraGameWorld() {
   const [input, setInput] = useState("");
   const [monster, setMonster] = useState(null);
   const [saved, setSaved] = useState([]);
+  // 💥 Particle explosion trigger state
+ const [explode, setExplode] = useState(null);
 
   useEffect(() => {
     const hum = typeof Audio !== "undefined" ? new Audio("/lab-ambience.mp3") : null;
@@ -39,56 +42,56 @@ export default function HipponoraGameWorld() {
 </motion.div>
 
       {/* 🌌 Background */}
-      <div className="absolute w-96 h-96 bg-purple-600 opacity-30 blur-3xl animate-pulse top-10 left-10" />
+            <div className="absolute w-96 h-96 bg-purple-600 opacity-30 blur-3xl animate-pulse top-10 left-10" />
       <div className="absolute w-96 h-96 bg-blue-500 opacity-30 blur-3xl animate-pulse bottom-10 right-10" />
-
+      {/* 🧠 Central AI Core */}
+<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+  <div className="w-40 h-40 rounded-full bg-purple-50 blur-3xl opacity-40 animate-pulse" />
+</div>
       {/* 🦕 Dino */}
-      <motion.div className="absolute top-8 left-1/2 -translate-x-1/2 text-center" animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity }}>
-        <div className="text-6xl">🦕</div>
+      <motion.div 
+  className="absolute top-16 left-1/2 -translate-x-1/2 text-center z-20" animate={{ y: [0, -12, 0], rotate: [0, 2, -2, 0] }}
+transition={{ repeat: Infinity, duration: 4 }}>
+        <Image
+  src="/dendrasaur_hero.png"
+  alt="Dendrasaur"
+  width={180}
+  height={180}
+  className="mx-auto drop-shadow-[0_0_25px_rgba(168,85,247,0.8)]"
+/>
         <p className="text-purple-300 text-sm">{activeRoom ? getDinoMessage(activeRoom) : "Choose your lab"}</p>
       </motion.div>
 
-/* Add Floating Random objects Shikha Pandey 3/19/2016 */
-
-{[...Array(8)].map((_, i) => (
+{/* Add Floating Random objects Shikha Pandey 3/19/2016 */}
+{/* 🌌 Floating Sci-Fi Objects (Controlled Chaos) */}
+{[
+  { icon: "🧪", size: "text-3xl" },
+  { icon: "🤖", size: "text-5xl" },
+  { icon: "⚙️", size: "text-4xl" },
+  { icon: "🧬", size: "text-4xl" },
+  { icon: "🧠", size: "text-5xl" },
+  { icon: "🛰️", size: "text-5xl" },
+  { icon: "🔬", size: "text-4xl" },
+  { icon: "🌌", size: "text-6xl" }
+].map((obj, i) => (
   <motion.div
     key={i}
-    className="absolute text-3xl"
+    className={`absolute ${obj.size} opacity-80`}
     style={{
-      top: `${Math.random() * 90}%`,
-      left: `${Math.random() * 90}%`,
+      top: `${10 + i * 10}%`,
+      left: `${(i % 2 === 0 ? 10 : 70)}%`,
     }}
     animate={{
-      y: [0, -20, 0],
-      rotate: [0, 10, -10, 0],
+      y: [0, -40, 0],
+      x: [0, 20, -20, 0],
+      rotate: [0, 15, -15, 0],
     }}
     transition={{
-      duration: 4 + Math.random() * 3,
+      duration: 6 + i,
       repeat: Infinity,
     }}
   >
-    {["🧪","🤖","🦾","⚙️","🐸","🧬","🧠","🐵"][i % 8]}
-  </motion.div>
-))}
-
-{[...Array(8)].map((_, i) => (
-  <motion.div
-    key={i}
-    className="absolute text-3xl"
-    style={{
-      top: `${Math.random() * 90}%`,
-      left: `${Math.random() * 90}%`,
-    }}
-    animate={{
-      y: [0, -20, 0],
-      rotate: [0, 10, -10, 0],
-    }}
-    transition={{
-      duration: 4 + Math.random() * 3,
-      repeat: Infinity,
-    }}
-  >
-    {["🧪","🤖","🦾","⚙️","🐸","🧬","🧠","🐵"][i % 8]}
+    {obj.icon}
   </motion.div>
 ))}
 
@@ -160,25 +163,88 @@ export default function HipponoraGameWorld() {
   🤖
 </motion.div>
 
-      {/* 🗺️ MAP */}
+{/* 🧪 Lab Surface */}
+<div className="absolute bottom-0 w-full h-[180px] bg-gradient-to-t from-purple-900 via-purple-800/40 to-transparent" />
+    {/* 💥 Particle Explosion */}
+{explode && (
+  <div className="pointer-events-none absolute inset-0 z-50">
+    {[...Array(12)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute text-yellow-300 text-xl"
+        style={{
+          left: explode.x,
+          top: explode.y,
+        }}
+        initial={{ scale: 0, opacity: 1 }}
+        animate={{
+          x: (Math.random() - 0.5) * 200,
+          y: (Math.random() - 0.5) * 200,
+          scale: 1.5,
+          opacity: 0,
+        }}
+        transition={{ duration: 3.0 }}
+      >
+        💥
+      </motion.div>
+    ))}
+  </div>
+)}
+      {/* 🗺️ MAP with energy beams */}
       {!activeRoom && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="relative w-[700px] h-[450px]">
             <svg className="absolute inset-0 w-full h-full">
+              <path d="M100 200 Q350 50 650 200" stroke="#f472b6" strokeWidth="2" opacity="0.4" />
               <path d="M80 260 Q360 40 640 260" stroke="#7c3aed" strokeWidth="3" fill="transparent" />
-            </svg>
+              <path d="M200 300 Q400 100 600 300" stroke="#22d3ee" strokeWidth="2" opacity="0.6" />
+                          </svg>
 
             {rooms.map((room) => (
-              <motion.div
-                key={room.name}
-                whileHover={{ scale: 1.15 }}
-                onClick={() => { playClick(); setActiveRoom(room.name); }}
-                className={`absolute cursor-pointer text-center ${room.position}`}
-              >
-                <div className="text-5xl">{room.icon}</div>
-                <p>{room.name}</p>
-              </motion.div>
-            ))}
+  <motion.div
+  key={room.name}
+  whileHover={{ scale: 1.15 }}
+  whileTap={{ scale: 1.6, rotate: 10 }} // 🌀 portal press
+
+    onClick={(e) => {
+  playClick();
+
+  // 💥 capture click position
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+
+  setExplode({ x, y });
+
+  // 🌀 delay for effect
+  setTimeout(() => {
+    setActiveRoom(room.name);
+    setExplode(null);
+  }, 1100);
+}}
+    className={`absolute cursor-pointer text-center ${room.position}`}
+  >
+    {/* 🧪 Lab Platform + Room Object */}
+    <div className="relative flex flex-col items-center">
+
+      {/* Glow base (platform under room) */}
+      <div className="absolute -bottom-2 w-16 h-3 bg-purple-500 blur-md opacity-60 rounded-full" />
+
+      {/* Floating icon */}
+      <motion.div
+        animate={{ y: [0, -10, 0] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="text-5xl"
+      >
+        {room.icon}
+      </motion.div>
+
+      {/* Room label */}
+      <p className="text-sm mt-1">{room.name}</p>
+
+    </div>
+  </motion.div>
+))}
           </div>
         </div>
       )}
@@ -186,7 +252,11 @@ export default function HipponoraGameWorld() {
       {/* ROOMS */}
       <AnimatePresence>
         {activeRoom && (
-          <motion.div initial={{ scale: 0.3 }} animate={{ scale: 1 }} exit={{ scale: 0.3 }} className="absolute inset-0">
+          <motion.div
+  initial={{ scale: 0.2, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  exit={{ scale: 0.2, opacity: 0 }}
+  transition={{ type: "spring", stiffness: 120 }} className="absolute inset-0">
 
             {activeRoom === "Art Lab" && (
               <ArtLab
