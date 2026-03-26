@@ -124,3 +124,82 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ============================= */
+/* 🎨 Hipponora Design Layer */
+/* ============================= */
+
+/* Kids-friendly soft colors (non-destructive) */
+:root {
+  --hippo-primary: #6EE7B7;
+  --hippo-secondary: #A5B4FC;
+  --hippo-accent: #FDE68A;
+}
+
+/* 🌈 Premium soft button */
+.btn-hippo {
+  background: var(--hippo-primary);
+  color: #1F2937;
+  padding: 12px 24px;
+  border-radius: var(--radius-2xl);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.btn-hippo:hover {
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* ✨ Secondary button */
+.btn-hippo-outline {
+  padding: 12px 24px;
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border);
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.btn-hippo-outline:hover {
+  background: var(--muted);
+}
+
+/* 🌟 Soft glow utility */
+.glow-hippo {
+  background: var(--hippo-primary);
+  filter: blur(60px);
+  opacity: 0.3;
+}
+
+/* 🎈 Floating blobs (reusable anywhere) */
+.blob-purple {
+  background: var(--hippo-secondary);
+  filter: blur(50px);
+  opacity: 0.25;
+}
+
+.blob-yellow {
+  background: var(--hippo-accent);
+  filter: blur(50px);
+  opacity: 0.25;
+}
+
+/* 🧸 Friendly container spacing */
+.section-hippo {
+  @apply px-10 py-20;
+}
+
+/* 🪄 Smooth hover links */
+.link-hippo {
+  @apply transition-opacity duration-200 hover:opacity-70;
+}
