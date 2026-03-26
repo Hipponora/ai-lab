@@ -1,4 +1,9 @@
+"use client";
+import { useSmoothNavigate } from "@/hooks/useSmoothNavigate";
+import Link from "next/link";
+
 export default function Hero() {
+  const { navigate, loading } = useSmoothNavigate();
   return (
     <section className="section-hippo relative flex items-center justify-between">
 
@@ -18,9 +23,15 @@ export default function Hero() {
         </p>
 
         <div className="mt-6 flex gap-4">
-          <button className="btn-hippo">
-            Start Adventure
-          </button>
+          {/* go to games page */}
+          
+<button
+  onClick={() => navigate("/hipponora")}
+  className="btn-hippo cursor-pointer active:scale-95 transition-transform duration-150"
+>
+  {loading ? "Loading..." : "Start Adventure"}
+</button>
+
 
           <button className="btn-hippo-outline">
             Watch Demo
